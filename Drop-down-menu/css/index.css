@@ -1,0 +1,73 @@
+ul{padding: 0; margin: 0; list-style: none;}
+.clearfix:after{
+	content: '';
+	display: block;
+	clear: both;
+}
+.fl{
+	float: left;
+}
+.fr{
+	float: right;
+}
+*{
+	box-sizing: border-box;
+}
+.notice,
+.dropMenu{
+	width: 345px;
+	height: 26px;
+	margin: 150px;
+}
+.sub_tit{
+	width: 42.85714%;
+}
+.sub_tit>span{
+	height: 26px;
+    font: 12px/26px "宋体";
+    color: #555;
+}
+.mark_sel{
+	position: relative;
+	width: 57.14286%;
+}
+.mark_sel .sel_txt {
+    position: relative;
+    width: 76.92308%;
+    height: 26px;
+    font: 12px/24px "宋体";
+    padding-left: 10px;
+    border: 1px solid #a9a9a9;
+    color: #555;
+    overflow: hidden;
+}
+.mark_sel i{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    padding: 12px 20px 12px 15px;
+    background: url(../img/triangle.png) no-repeat center;
+    cursor: pointer;
+}
+.mark_sel .sel_list {
+    display: none;
+    position: absolute;
+    bottom: -79px;
+    left: 0;
+    z-index: 2;
+    width: 76.92308%;
+    border: 1px solid #a9a9a9;
+    border-top: none;
+    background-color: #fff;
+}
+.sel_list > li {
+    float: left;
+    width: 100%;
+    height: 26px;
+    font: 12px/24px "宋体";
+    padding-left: 10px;
+    color: #555;
+    cursor: default;
+}
