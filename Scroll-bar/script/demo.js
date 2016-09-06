@@ -86,10 +86,10 @@
             var self = this;
             self.$tabItem.on('click', function(e){
                 e.preventDefault();
-                var index = $(this).index();
+                const index = $(this).index();
                 self.changeTabSelect(index);
                 // 已经滚出可视区的内容高度 +　指定锚点与内容容器的距离
-                self.scrollTo(self.$cont[0].scrollTop + self.getAchorPosition(index));
+                self.scrollTo(self.$cont[0].scrollTop + self.getAnchorPos(index));
             });
             return self;
         },
@@ -99,20 +99,27 @@
          * @return {[obj]}       [self]
          */
         changeTabSelect: function(index){
-            var self, active;
-            self = this;
-            active = self.options.tabActiveClass;
+            const self = this;
+            const active = self.options.tabActiveClass;
             return self.$tabItem.eq(index).addClass(active).siblings().removeClass(active);
         },
         getAnchorPos: function(index){
             return this.$anchor.eq(index).position().top;
+        },
+        getAllAnchorPos: function () {
+            const self = this;
+            const allAnchorPos = [];
+            for (let i = 0; i < self.$anchor.length; i++) {
+                allAnchorPos.push(self.$cont[0].scrollTop + self.getAnchorPos(i));
+            }
+            return allAnchorPos;
         },
         /**
          * [_bindContScroll 监听内容的滚动，同步滑块的位置]
          * @return {[obj]} [self对象]
          */
         _bindContScroll: function(){
-            var self = this;
+            const self = this;
             self.$cont.on('scroll', function(){
                 var sliderEle = self.$slider && self.$slider[0];
                 if(sliderEle){
@@ -122,12 +129,12 @@
             return self;
         },
         _bindMouseWheel: function(){
-            var self = this;
-            self.$cont.on('mousewheel DOMMouseScroll', function(e){
+            const self = this;
+            self.$cont.on('mousewheel DOMMouseScroll', function (e) {
                 e.preventDefault();
                 var oEvent, wheelRange;
                 oEvent = e.originalEvent;
-                wheelRange = oEvent.wheelDelta ? -oEvent.wheelDelta / 120 : (oEvent.detail || 0) / 3;
+                wheelRange = oEvent.wheelDelta ? (-oEvent.wheelDelta / 120) : (oEvent.detail / 3);
                 self.scrollTo(self.$cont[0].scrollTop + wheelRange * self.options.wheelStep);
             })
             return self;
@@ -137,9 +144,8 @@
          * @return {[num]}
          */
         getSliderPos: function(){
-            var self, maxSliderPos;
-            self = this;
-            maxSliderPos = self.getMaxSliderPos();
+            const self = this;
+            const maxSliderPos = self.getMaxSliderPos();
             return Math.min(maxSliderPos, maxSliderPos * self.$cont[0].scrollTop / self.getMaxScrollPos());
         },
         /**
@@ -155,7 +161,7 @@
          * @return {[num]}
          */
         getMaxSliderPos: function(){
-            var self = this;
+            const self = this;
             return self.$bar.height() - self.$slider.height();
         },
         /**
@@ -164,6 +170,20 @@
          */
         scrollTo: function(posVal){
             const self = this;
+            const posArr = self.getAllAnchorPos();
+            const getIndex = (Val) => {
+                for (let i = posArr.length - 1; i >= 0; i--) {
+                    if (Val >= posArr[i]) {
+                        return i;
+                    } else {
+                        continue;
+                    }
+                }
+            }
+
+            if (self.$tabItem.length == posArr.length) {
+                self.changeTabSelect(getIndex(posVal));
+            }
             self.$cont.scrollTop(posVal);
         }
     });
